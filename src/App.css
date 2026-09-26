@@ -1,1 +1,209 @@
 
+:root {
+  --bg-color: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --primary: #0ea5e9;
+  --primary-hover: #0284c7;
+  --border: #e2e8f0;
+  --radius: 8px;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.app-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 2.5rem;
+}
+
+.app-header p {
+  margin: 0.5rem 0 0 0;
+  color: var(--text-muted);
+}
+
+/* Layout Split */
+.app-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .app-layout {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Section Common Styles */
+section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+
+section h2 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: 1.25rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+/* Recipes Layout */
+.recipe-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.recipe-card {
+  padding: 1rem;
+  background: var(--bg-color);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.recipe-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.recipe-text {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.recipe-meta {
+  display: block;
+  margin-top: 1rem;
+  color: var(--text-muted);
+}
+
+.recipe-meta span {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* Form Styling */
+.styled-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1fr;
+}
+
+.styled-form input,
+.styled-form textarea,
+.styled-form select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--bg-color);
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.styled-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.styled-form input:focus,
+.styled-form textarea:focus,
+.styled-form select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Users & Categories items */
+.list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-color);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+
+.subtext {
+  color: var(--text-muted);
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background: var(--border);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.app-header > div {
+  display: flex;
+  align-items: center; /* Vertically aligns text and logo */
+  gap: 12px;           /* Spacing between the text and the logo */
+}
+
+/* Styles to make the logo look nice */
+.app-header img {
+  height: 40px;        /* Set a clean, consistent height */
+  width: auto;         /* Maintain aspect ratio */
+  object-fit: contain;
+}

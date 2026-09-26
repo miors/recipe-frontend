@@ -1,32 +1,39 @@
 import { useEffect, useState } from "react";
+import "./App.css";
+import toast, { Toaster } from "react-hot-toast";
+import miorLogo from "./assets/miorecipes.png";
 
-// Replace these URLs with your own API endpoints
+const backend = `https://recipe-backend-production-0156.up.railway.app/`;
 const API = {
-  recipes: "http://localhost:3000/recipes",
-  recipeById: "http://localhost:3000/recipes/1",
-  createRecipe: "http://localhost:3000/recipes",
-
-  users: "http://localhost:3000/users",
-  createUser: "http://localhost:3000/users",
-
-  categories: "http://localhost:3000/categories",
+  recipes: `${backend}recipes`,
+  recipeById: `${backend}recipes/1`,
+  createRecipe: `${backend}recipes`,
+  users: `${backend}users`,
+  createUser: `${backend}users`,
+  categories: `${backend}categories`,
 };
 
 function Recipes({ recipes }) {
   return (
-    <section>
+    <section className="card-section">
       <h2>Recipes</h2>
-
-      {recipes.map((recipe) => (
-        <article key={recipe.id}>
-          <h3>{recipe.name}</h3>
-          <p>{recipe.ingredients}</p>
-          <p>{recipe.instructions}</p>
-          <small>
-            Author: {recipe.author} | Category: {recipe.category}
-          </small>
-        </article>
-      ))}
+      <div className="recipe-grid">
+        {recipes.map((recipe) => (
+          <article key={recipe.id} className="recipe-card">
+            <h3>{recipe.name}</h3>
+            <p className="recipe-text">
+              <strong>Ingredients:</strong> {recipe.ingredients}
+            </p>
+            <p className="recipe-text">
+              <strong>Instructions:</strong> {recipe.instructions}
+            </p>
+            <small className="recipe-meta">
+              Author: <span>{recipe.author}</span> | Category:{" "}
+              <span>{recipe.category}</span>
+            </small>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
@@ -35,26 +42,11 @@ function AddRecipe({ onRecipeAdded, users, categories }) {
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
-  // const [chefs, setChefs] = useState([]);
-  // const [categories, setCategories] = useState([]);
   const [selectedChefValue, setSelectedChefValue] = useState("");
   const [selectedCategoryValue, setSelectedCategoryValue] = useState("");
 
-  // useEffect(() => {
-  //   fetch(API.users)
-  //     .then((response) => response.json())
-  //     .then((data) => setChefs(data));
-  // }, []);
-
-  // useEffect(() => {
-  //   fetch(API.categories)
-  //     .then((response) => response.json())
-  //     .then((data) => setCategories(data));
-  // }, []);
-
   async function handleSubmit(event) {
     event.preventDefault();
-
     await fetch(API.createRecipe, {
       method: "POST",
       headers: {
@@ -68,15 +60,14 @@ function AddRecipe({ onRecipeAdded, users, categories }) {
         categoryname: selectedCategoryValue,
       }),
     });
-
     onRecipeAdded();
     setName("");
     setIngredients("");
     setInstructions("");
     setSelectedChefValue("");
     setSelectedCategoryValue("");
-
-    alert("Recipe added!");
+    toast.success("Recipe successfully added!");
+    // alert("Recipe added!");
   }
 
   const handleDropdownChefChange = (event) => {
@@ -88,66 +79,55 @@ function AddRecipe({ onRecipeAdded, users, categories }) {
   };
 
   return (
-    <section>
+    <section className="form-section">
       <h2>Add Recipe</h2>
-
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="styled-form">
         <input
           placeholder="Recipe name"
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
-
         <textarea
           placeholder="Ingredients"
           value={ingredients}
           onChange={(event) => setIngredients(event.target.value)}
         />
-
         <textarea
           placeholder="Instructions"
           value={instructions}
           onChange={(event) => setInstructions(event.target.value)}
         />
-
         <select
           id="api-select-chef"
           value={selectedChefValue}
           onChange={handleDropdownChefChange}
         >
-          {/* Placeholder choice */}
-          <option key={"chef_title"} value="">
+          <option key="chef_title" value="">
             -- Please select a chef --
           </option>
-
-          {/* 6. Map through options to build the dropdown dynamically */}
           {users.map((user) => (
             <option key={user.id} value={user.username}>
               {user.username}
             </option>
           ))}
         </select>
-
         <select
           id="api-select-categories"
           value={selectedCategoryValue}
           onChange={handleDropdownCategoryChange}
         >
-          {/* Placeholder choice */}
-          <option key={"cat_title"} value="">
+          <option key="cat_title" value="">
             -- Please select a category --
           </option>
-          {console.log(categories)}
-
-          {/* 6. Map through options to build the dropdown dynamically */}
           {categories.map((category) => (
             <option key={category.id} value={category.name}>
               {category.name}
             </option>
           ))}
         </select>
-
-        <button type="submit">Add Recipe</button>
+        <button type="submit" className="btn-primary">
+          Add Recipe
+        </button>
       </form>
     </section>
   );
@@ -155,15 +135,16 @@ function AddRecipe({ onRecipeAdded, users, categories }) {
 
 function Users({ users }) {
   return (
-    <section>
-      <h2>Users</h2>
-
-      {users.map((user) => (
-        <p key={user.id}>
-          {user.username} - {user.email}
-          {/* {user.username} */}
-        </p>
-      ))}
+    <section className="card-section">
+      <h2>Chefs</h2>
+      <div className="list-grid">
+        {users.map((user) => (
+          <div key={user.id} className="list-item">
+            <strong>{user.username}</strong>
+            <span className="subtext">{user.email}</span>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
@@ -174,7 +155,6 @@ function AddUser({ onUserAdded }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     await fetch(API.createUser, {
       method: "POST",
       headers: {
@@ -185,32 +165,31 @@ function AddUser({ onUserAdded }) {
         email,
       }),
     });
-
     onUserAdded();
     setName("");
     setEmail("");
-
-    alert("User added!");
+    // alert("User added!");
+    toast.success("User successfully added!");
   }
 
   return (
-    <section>
-      <h2>Add User</h2>
-
-      <form onSubmit={handleSubmit}>
+    <section className="form-section">
+      <h2>Add Chef</h2>
+      <form onSubmit={handleSubmit} className="styled-form">
         <input
           placeholder="Name"
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
-
         <input
           placeholder="Email"
+          type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
-
-        <button type="submit">Add User</button>
+        <button type="submit" className="btn-primary">
+          Add Chef
+        </button>
       </form>
     </section>
   );
@@ -218,12 +197,15 @@ function AddUser({ onUserAdded }) {
 
 function Categories({ categories }) {
   return (
-    <section>
+    <section className="card-section">
       <h2>Categories</h2>
-
-      {categories.map((category) => (
-        <p key={category.id}>{category.name}</p>
-      ))}
+      <div className="tag-cloud">
+        {categories.map((category) => (
+          <span key={category.id} className="tag">
+            {category.name}
+          </span>
+        ))}
+      </div>
     </section>
   );
 }
@@ -257,21 +239,33 @@ function App() {
   }, []);
 
   return (
-    <main>
-      <h1>KitchenBase</h1>
-      <p>A simple recipe collection.</p>
+    <main className="app-container">
+      <div>
+        <Toaster />
+      </div>
+      <header className="app-header">
+        <div>
+          <h1>MioRecipes</h1>
+          <img src={miorLogo} alt="miorecipes logo" />
+        </div>
+        <p>A simple recipe collection.</p>
+      </header>
 
-      <Recipes recipes={recipes} />
-      <AddRecipe
-        onRecipeAdded={fetchRecipes}
-        users={users}
-        categories={categories}
-      />
-
-      <Users users={users} />
-      <AddUser onUserAdded={fetchUsers} />
-
-      <Categories categories={categories} />
+      <div className="app-layout">
+        <div className="main-content">
+          <Recipes recipes={recipes} />
+        </div>
+        <aside className="sidebar">
+          <AddRecipe
+            onRecipeAdded={fetchRecipes}
+            users={users}
+            categories={categories}
+          />
+          <AddUser onUserAdded={fetchUsers} />
+          <Users users={users} />
+          <Categories categories={categories} />
+        </aside>
+      </div>
     </main>
   );
 }
