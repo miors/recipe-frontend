@@ -101,7 +101,7 @@ cd into directory
 
 ### Readme
 
-## ![MioRecipes Readme](miorrecipes-readme.png)
+![MioRecipes Readme](miorrecipes-readme.png)
 
 ## 📝 License
 
