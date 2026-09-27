@@ -207,3 +207,19 @@ section h2 {
   width: auto;         /* Maintain aspect ratio */
   object-fit: contain;
 }
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff3b30;
+  cursor: pointer;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  opacity: 0.8;
+}
+

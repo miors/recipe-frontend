@@ -4,6 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import miorLogo from "./assets/miorecipes.png";
 
 const backend = `https://recipe-backend-production-0156.up.railway.app/`;
+// const backend = `http://localhost:3002/`;
 const API = {
   recipes: `${backend}recipes`,
   recipeById: `${backend}recipes/1`,
@@ -13,14 +14,25 @@ const API = {
   categories: `${backend}categories`,
 };
 
-function Recipes({ recipes }) {
+function Recipes({ recipes, onDeleteRecipe }) {
   return (
     <section className="card-section">
       <h2>Recipes</h2>
       <div className="recipe-grid">
         {recipes.map((recipe) => (
           <article key={recipe.id} className="recipe-card">
-            <h3>{recipe.name}</h3>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h3>{recipe.name}</h3>
+              <button
+                onClick={() => {
+                  onDeleteRecipe(recipe.id);
+                }}
+                class="delete-btn"
+                aria-label="Delete item"
+              >
+                X
+              </button>
+            </div>
             <p className="recipe-text">
               <strong>Ingredients:</strong> {recipe.ingredients}
             </p>
@@ -86,21 +98,25 @@ function AddRecipe({ onRecipeAdded, users, categories }) {
           placeholder="Recipe name"
           value={name}
           onChange={(event) => setName(event.target.value)}
+          required
         />
         <textarea
           placeholder="Ingredients"
           value={ingredients}
           onChange={(event) => setIngredients(event.target.value)}
+          required
         />
         <textarea
           placeholder="Instructions"
           value={instructions}
           onChange={(event) => setInstructions(event.target.value)}
+          required
         />
         <select
           id="api-select-chef"
           value={selectedChefValue}
           onChange={handleDropdownChefChange}
+          required
         >
           <option key="chef_title" value="">
             -- Please select a chef --
@@ -115,6 +131,7 @@ function AddRecipe({ onRecipeAdded, users, categories }) {
           id="api-select-categories"
           value={selectedCategoryValue}
           onChange={handleDropdownCategoryChange}
+          required
         >
           <option key="cat_title" value="">
             -- Please select a category --
@@ -180,12 +197,14 @@ function AddUser({ onUserAdded }) {
           placeholder="Name"
           value={name}
           onChange={(event) => setName(event.target.value)}
+          required
         />
         <input
           placeholder="Email"
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
+          required
         />
         <button type="submit" className="btn-primary">
           Add Chef
@@ -227,6 +246,26 @@ function App() {
       .then((data) => setRecipes(data));
   };
 
+  const deleteRecipe = async (id) => {
+    if (!confirm("Are you sure you want to delete this record?")) return;
+    try {
+      // Sends the DELETE request to the backend using the recipe ID
+      const response = await fetch(`${API.recipes}/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        toast.success("Recipe successfully deleted!");
+        fetchRecipes(); // Refresh the recipe list automatically
+      } else {
+        toast.error("Failed to delete the recipe.");
+      }
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+      toast.error("Something went wrong!");
+    }
+  };
+
   const fetchUsers = () => {
     fetch(API.users)
       .then((response) => response.json())
@@ -253,7 +292,12 @@ function App() {
 
       <div className="app-layout">
         <div className="main-content">
-          <Recipes recipes={recipes} />
+          <Recipes
+            onDeleteRecipe={(id) => {
+              deleteRecipe(id);
+            }}
+            recipes={recipes}
+          />
         </div>
         <aside className="sidebar">
           <AddRecipe
