@@ -3,8 +3,8 @@ import "./App.css";
 import toast, { Toaster } from "react-hot-toast";
 import miorLogo from "./assets/miorecipes.png";
 
-// const backend = `https://recipe-backend-production-0156.up.railway.app/`;
-const backend = `http://localhost:3002/`;
+const backend = `https://recipe-backend-production-0156.up.railway.app/`;
+// const backend = `http://localhost:3002/`;
 const API = {
   recipes: `${backend}recipes`,
   recipeById: `${backend}recipes/1`,

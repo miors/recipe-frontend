@@ -89,7 +89,19 @@ cd into directory
    npm start
    ```
 
----
+## Screenshots
+
+### Frontend
+
+![MioRecipes Frontend](miorecipes-frontend.png)
+
+### Backend
+
+![MioRecipes Backend](miorecipes-backend.png)
+
+### Readme
+
+## ![MioRecipes Readme](miorrecipes-readme.png)
 
 ## 📝 License
 
